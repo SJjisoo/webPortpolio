@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .v {
+            width: 800px;
+            margin: auto;
+        }
+
+        header {
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+            /*z-index를 안 넣었을때 바로 밑에 이미지에서는 메뉴가 가려지고 쭉 내렸을때는 메뉴가 안가려지는 이유는 이미지에 포지션을 줘서 우선순위가 달라져서 그럴 수 있음*/
+        }
+        header i {
+            color: white;
+        }
+        .menu {
+            align-items: center;
+        }
+        .menu ul {
+            padding: 0;
+            margin: 0;
+        }
+        .menu li {
+            display: inline-block;
+        }
+        .menu li a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: white;
+            background-color: black;
+            display: block;
+            font-size: 15px;
+        } /*ul li 생성하고 그 안에 a를 넣었을때 a 자체를 디스플레이 블락을 주면 a 자체가 블럭이 되서 hover 같은걸 주기 편하다*/
+        .menu li a:hover {
+            background-color: white;
+            color: black;
+        }
+        /*MERCH 메뉴는 li자체를 인라인 스타일시트로 안보이게 display:none; 해둠*/
+        .right-button > a {
+            padding: 12px 24px;
+        }
+        .right-button > a:hover {
+            background-color: red;
+        }
+        /*여기서부터 MORE에 숨겨진 메뉴입니다*/
+        .menu > ul > li:last-of-type > ul {
+            display: none;
+        }
+        .more-menu a {
+            padding: 10px;
+            background-color: white;
+        }
+        .more-menu a:hover {
+            background-color: grey;
+        }
+        /*여기서부터 모바일에서 메뉴입니다*/
+        .right-button > i.fa {
+            display: none;
+            padding: 12px 24px;
+            /*내가 불러온 i의 클래스 "fa"안에는 인라인블락이 이미 있음
+            그래서 단순하게 i 자체를 디스플레이 none으로 해도 안됨
+            i.fa로 딱 클라스 지정을 해주고 거기서 디스플레이를 none으로 바꿔주는 개념*/
+        }
+
+        .img-slide {
+            position: relative;
+        }
+        .img-slide img {
+            width: 100%;
+            height: auto;
+        }
+        .imgtext {
+            text-align: center;
+            color: white;
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translate(-50%);
+            /*left:50%을 줘도 글자 길이가 있으니까 당연히 정중앙이 안됨. 게다가 창 가로 사이즈를 조절하면 자동으로 가운데 정렬도 안됨. 이럴때 트랜스폼 트랜스레이트로 -50%를 주면 절반만큼 왼쪽으로 가니까 가운데가 맞춰짐*/
+        }
+        .imgtext h3 {
+            font-size: 25px;
+        }
+        .img2, .img3 {
+            display: none;
+        } /*슬라이드 될 나머지 그림 두개는 일단 숨겨뒀습니다*/
+        
+        .THEBAND {
+            padding-top: 100px;
+            padding-bottom: 120px;
+            text-align: center;
+        }
+        .THEBAND h2 {
+            font-size: 30px;
+        }
+        .none-center {
+            text-align: left;
+            word-break: break-all;
+        }
+        .Name {
+            display: inline-block;
+        }
+        .Name > img {
+            width: 60%;
+        }
+
+        .TOUR-DATES {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding-top: 45px;
+            padding-bottom: 80px;
+        }
+        .tickets h2 {
+            font-size: 30px;
+        }
+        .tickets > p {
+            font-size: 15px;
+            font-style: oblique;
+            padding-bottom: 30px;
+        }
+        .tickets ul {
+            padding: 0;
+        }
+        .tickets ul li {
+            list-style: none;
+            border: 1px solid black;
+            text-align: left;
+            background-color: white;
+            color: black;
+            padding: 10px;
+        }
+        .tickets ul li span {
+            background-color: red;
+            padding: 2px 7px;
+            color: white;
+        }
+        .card-box {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .card {
+            width: 32%;
+            background-color: white;
+            padding-bottom: 20px;
+        }
+        .card img {
+            width: 100%;
+        }
+        .card img:hover {
+            filter: brightness(50%);
+        }
+        .card p {
+            color: black;
+            text-align: left;
+            padding-left: 10px;
+        }
+        .card button {
+            background-color: black;
+            color: white;
+            float: left;
+            margin: 10px;
+            font-size: 16px;
+            padding: 10px;
+        }
+        .card button:hover {
+            color: black;
+            background-color: gray;
+            border: 0;
+        }
+
+        .CONTACT {
+            text-align: center;
+            padding: 80px 0;
+        }
+        .CONTACT > h2 {
+            font-size: 30px;
+        }
+        .write-box {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .write1 {
+            text-align: left;
+        }
+        .write2 {
+            text-align: left;
+        }
+        .write2 > form > input {
+            width: 100%;
+        }
+        .text2 > input , .write2 > form > input {
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .write2 > button {
+            margin: 10px;
+            float: right;
+            background-color: black;
+            color: white;
+            font-size: 15px;
+            padding: 10px;
+        }
+        .write2 > button:hover {
+            color: black;
+            background-color: gray;
+            border: white; /*여기랑 위에 Buy Tickets버튼 hover했을때
+            사이즈가 살짝 작아지는걸 어떻게 해야할지 모르겠네요
+            그나가 바이티켓버튼은 작아져도 스스로만 작아지는데
+            여기는 작아지면서 밑에 레이블들도 살짝 올라오네요*/
+        }
+
+        .img-box > img {
+            width: 100%;
+        }
+
+        .footer-color {
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+        footer {
+            text-align: center;
+            padding: 60px 0;
+            font-size: 20px;
+        }
+        footer i, footer p, footer > p > a {
+            color: rgb(31, 29, 29);
+        }
+        footer i:hover {
+            color: gray;
+        }
+        footer p {
+            font-size: 15px;
+        }
+
+        @media (max-width:800px) {
+            .v {
+              width: 100%;  
+            }
+            .Name {
+                width: 30%;
+            }
+            .card-box {
+                width: 98%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .tickets > ul {
+                width: 98%;
+                margin: auto;
+            }
+            .write-box {
+                width: 98%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .menu > ul > li:nth-child(2),
+            .menu > ul > li:nth-child(3),
+            .menu > ul > li:nth-child(4),
+            .menu > ul > li:nth-child(6)
+            {
+                display: none;
+            }
+            .right-button > a {
+                display: none;
+            }
+            .right-button > i.fa {
+                display: block;
+            }
+            .menu:first-child {
+                display: inherit;
+            }
+            .imgtext {
+                display: none;
+            }
+            .Name {
+                width: 100%;
+            }
+            .card-box {
+                display: block;
+            }
+            .card {
+                width: 98%;
+                margin: 10px auto;
+                overflow: hidden;
+                /*이 카드에 속해있는 버튼을 float를 해줬기 때문에 영역 밖으로 벗어남
+                이럴경우 overflow hidden을 주면 넘치는 부분이 잘리기 때문에 버튼이 넘어가있어서 잘리는게 아니라 박스가 늘어나면서 잘 들어오게 조정이 되는듯*/
+            }
+            .CONTACT {
+                padding: 100px 10px;
+                overflow: hidden;
+                /*이것도 바로 위랑 똑같음
+                버튼이 float되어 있어서 패딩이 이 버튼을 무시하고 나머지 영역만 들어감
+                그래서 부모인 이 div를 overflow hidden 해주면 버튼도 영역에 들어가고 패딩이 적용됨*/
+            }
+            .write-box {
+                display: block;
+            }
+            .write1 {
+                margin-bottom: 10px;
+            }
+            .text2 {
+                display: block;
+            }
+            .text2 input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="menu">
+            <ul>
+                <li>
+                    <a href="#" title="HOME">HOME</a>
+                </li>
+                <li>
+                    <a href="#" title="BAND">BAND</a>
+                </li>
+                <li>
+                    <a href="#" title="TOUR">TOUR</a>
+                </li>
+                <li>
+                    <a href="#" title="CONTACT">CONTACT</a>
+                </li>
+                <li style="display: none;">
+                    <a class="pc-hide" href="#" title="MERCH">MERCH</a>
+                </li>
+                <li>
+                    <a href="#" title="MORE">MORE<i class="fa fa-caret-down"></i></a>
+                    <ul>
+                        <li>
+                            <a href="">Merchandise</a>
+                        </li>
+                        <li>
+                            <a href="">Extras</a>
+                        </li>
+                        <li>
+                            <a href="">Media</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="right-button">
+            <a href="#"><i class="fa fa-search"></i></a>
+            <i class="fa fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="img-slide">
+        <div class="img1">
+            <img src="imgs/la.jpg">
+            <div class="imgtext">
+                <h3>Los Angeles</h3>
+                <p><b>We had the best time playing at Venice Beach!</b></p>   
+            </div>
+        </div>
+        <div class="img2">
+            <img src="imgs/ny.jpg">
+            <div class="imgtext">
+                <h3>New York</h3>
+                <p><b>The atmosphere in New York is lorem ipsum.</b></p>
+            </div>
+        </div>
+        <div class="img3">
+            <img src="imgs/chicago.jpg">
+            <div class="imgtext">
+                <h3>Chicago</h3>
+                <p><b>Thank you, Chicago - A night we won't forget.</b></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="THEBAND v">
+        <h2>THE BAND</h2>
+        <p><i>We love music</i></p>
+        <p class="none-center">We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <div class="Name">
+            <p>Name</p>
+            <img src="imgs/bandmember.jpg">
+        </div>
+        <div class="Name">
+            <p>Name</p>
+            <img src="imgs/bandmember.jpg">
+        </div>
+        <div class="Name">
+            <p>Name</p>
+            <img src="imgs/bandmember.jpg">
+        </div>
+    </div>
+
+    <div class="TOUR-DATES">
+        <div class="TOUR-DATES2 v">
+            <div class="tickets">
+                <h2>TOUR DATES</h2>
+                <p>Remember to book your tickets!</p>
+                <ul>
+                    <li>September <span>Sold out</span></li>
+                    <li>October <span>Sold out</span></li>
+                    <li>November</li>
+                </ul>
+            </div>
+            <div class="card-box">
+                <div class="card">
+                    <img src="imgs/newyork.jpg">
+                    <p><b>New York</b></p>
+                    <p>Fri 27 Nov 2016</p>
+                    <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                    <button>Buy Tickets</button>
+                </div>
+                <div class="card">
+                    <img src="imgs/paris.jpg">
+                    <p><b>Paris</b></p>
+                    <p>Sat 28 Nov 2016</p>
+                    <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                    <button>Buy Tickets</button>
+                </div>
+                <div class="card">
+                    <img src="imgs/sanfran.jpg">
+                    <p><b>San Francisco</b></p>
+                    <p>Sun 29 Nov 2016</p>
+                    <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                    <button>Buy Tickets</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="CONTACT v">
+        <h2>CONTACT</h2>
+        <p><i>Fan? Drop a note!</i></p>
+        <div class="write-box">
+            <div class="write1">
+                <i class="fa fa-map-marker"></i> Chicago, US<br>
+                <i class="fa fa-phone"></i> Phone: +00 151515<br>
+                <i class="fa fa-envelope"></i> Email: mail@mail.com<br>
+            </div>
+            <div class="write2">
+                <form>
+                    <div class="text2">
+                        <input type="text" placeholder="Name">
+                        <input type="text" placeholder="Email">
+                    </div>
+                    <input type="text" placeholder="Message">
+                </form>
+                <button type="submit">SEND</button>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="img-box">
+        <img src="imgs/map.jpg">
+    </div>
+
+    <div class="footer-color">
+        <footer class="v">
+            <i class="fa fa-facebook-official w3-hover-opacity"></i>
+            <i class="fa fa-instagram w3-hover-opacity"></i>
+            <i class="fa fa-snapchat w3-hover-opacity"></i>
+            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+            <i class="fa fa-twitter w3-hover-opacity"></i>
+            <i class="fa fa-linkedin w3-hover-opacity"></i>
+            <p>Powered by <a href="#" target="_blank">w3.css</a></p>
+        </footer>
+    </div>
+
+</body>
+</html>
